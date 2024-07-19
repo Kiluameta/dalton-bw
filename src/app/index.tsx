@@ -11,26 +11,27 @@ export default function Index() {
 
   useEffect(() => {
     (async () => {
-      const response = await getPermissions();
-      console.log(response);
-
-      setPermission(response);
+      handleRequestPermission();
     })();
   }, []);
 
-  if (!permission) {
-    // Camera permissions are still loading.
-    return <View />;
+  async function handleRequestPermission() {
+    const response = await getPermissions();
+    console.log(response);
+
+    setPermission(response);
   }
 
-  if (!permission.granted) {
-    // Camera permissions are not granted yet.
+  if (!permission) {
     return (
       <View className="flex items-center justify-center">
         <Text className="text-white">
           We need your permission to show the camera
         </Text>
-        <TouchableOpacity className="bg-white" onPress={requestPermission} />
+        <TouchableOpacity
+          className="bg-white"
+          onPress={handleRequestPermission}
+        />
       </View>
     );
   }
